@@ -1,0 +1,47 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "Soccer.Api/Controllers"
+		},
+		{
+			"path": "Soccer.Api/ServiceConfigurations"
+		},
+		{
+			"path": "Soccer.Shared/Entities"
+		},
+		{
+			"path": "Soccer.Shared"
+		},
+		{
+			"path": "Soccer.Api"
+		},
+		{
+			"path": "Src/Common"
+		},
+		{
+			"path": "Soccer.Shared/Entities/Configurations"
+		},
+		{
+			"path": "Soccer.Shared/Repositories"
+		},
+		{
+			"path": "Soccer.Shared/UnitsOfWork"
+		},
+		{
+			"path": "Soccer.Shared/Validations"
+		},
+		{
+			"path": "Soccer.Shared/Dtos"
+		},
+		{
+			"path": "Src/AuthenticationServices"
+		},
+		{
+			"path": "Src/EmailSender"
+		}
+	],
+	"settings": {}
+}
