@@ -23,11 +23,12 @@ public static class Seed
 
         return modelBuilder;
     }
-    public static void SeedRoles(this ModelBuilder modelBuilder)
+    public static ModelBuilder SeedRoles(this ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<IdentityRole>().HasData(
-            new IdentityRole { Name = "Admin", NormalizedName = "ADMIN" },
+            new IdentityRole { Id = "7a5746ec-1709-46f9-be21-ca259a143f89", Name = "Admin", NormalizedName = "ADMIN" },
             new IdentityRole { Name = "User", NormalizedName = "USER" }
         );
+        return modelBuilder;
     }
 }

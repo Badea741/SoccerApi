@@ -2,8 +2,10 @@ using System.Web;
 using AuthenticationServices.Authentication;
 using AuthenticationServices.Helpers;
 using AuthenticationServices.Models;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Soccer.Shared.Dtos;
 
 namespace Soccer.Api.Controllers;
 [ApiController]
@@ -12,16 +14,18 @@ namespace Soccer.Api.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly IAuthentication _auth;
+    private readonly IMapper _mapper;
 
-    public AuthController(IAuthentication auth)
+    public AuthController(IAuthentication auth, IMapper mapper)
     {
         _auth = auth;
+        _mapper = mapper;
     }
     [AllowAnonymous]
     [HttpPost]
-    public async Task<IActionResult> Register(RegisterModel model)
+    public async Task<IActionResult> Register(ApplicationUserDto applicationUserDto)
     {
-        var result = await _auth.RegisterAsync(model);
+        var result = await _auth.RegisterAsync(applicationUserDto);
         if (!result.IsSuccess)
             return BadRequest(result);
         return Ok(result);
@@ -54,7 +58,7 @@ public class AuthController : ControllerBase
             return BadRequest(results);
         return Ok(results);
     }
-    [Authorize(Roles = Roles.Admin)]
+    [Authorize(Roles = Roles.User)]
     [HttpPost]
     public async Task<IActionResult> AddUserToRole([FromQuery] string username, string role)
     {
@@ -72,14 +76,14 @@ public class AuthController : ControllerBase
             return BadRequest(results);
         return Ok(results);
     }
-    [Authorize(Roles = Roles.Admin, AuthenticationSchemes = "Bearer")]
+    [Authorize(Roles = Roles.Admin)]
     [HttpGet]
     public IActionResult GetUsers()
     {
         var results = _auth.GetAllUsers();
         if (results == null)
             return BadRequest(results);
-        return Ok(results);
+        return Ok(results.Select(u => _mapper.Map<ApplicationUserDto>(u)));
     }
     [Authorize(Roles = Roles.Admin)]
     [HttpGet]
@@ -90,7 +94,7 @@ public class AuthController : ControllerBase
             var results = await _auth.GetUsersInRoleAsync(role);
             if (results == null)
                 return BadRequest(results);
-            return Ok(results);
+            return Ok(results.Select(u => _mapper.Map<ApplicationUserDto>(u)));
         }
         catch (Exception ex)
         {

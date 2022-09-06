@@ -14,7 +14,7 @@ namespace Soccer.Api.Controllers;
 [Authorize(AuthenticationSchemes = "Bearer")]
 public class PlayerController : BaseController<Player, PlayerDto>
 {
-    public PlayerController(IPlayerUnitOfWork unitOfWork, IMapper mapper, AbstractValidator<Player> validator) : base(unitOfWork, mapper, validator)
+    public PlayerController(IPlayerUnitOfWork unitOfWork, IMapper mapper, IValidator<Player> validator) : base(unitOfWork, mapper, validator)
     {
     }
     [Authorize(Roles = Roles.User)]

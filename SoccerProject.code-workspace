@@ -41,6 +41,9 @@
 		},
 		{
 			"path": "Src/EmailSender"
+		},
+		{
+			"path": "Soccer.Shared/AutoMapperProfiles"
 		}
 	],
 	"settings": {}

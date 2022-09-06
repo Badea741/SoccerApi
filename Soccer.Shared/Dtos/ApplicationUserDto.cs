@@ -1,5 +1,5 @@
-namespace AuthenticationServices.Models;
-public class RegisterModel
+namespace Soccer.Shared.Dtos;
+public class ApplicationUserDto
 {
     public string FullName { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;

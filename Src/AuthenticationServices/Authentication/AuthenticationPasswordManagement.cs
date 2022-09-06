@@ -20,7 +20,7 @@ public partial class Authentication
         newPassword = HttpUtility.UrlEncode(newPassword);
         try
         {
-            await Smtp.SendEmailAsync(user.Email, "Reset Password", $"Please reset your password by visiting this link: {"\n"} https://localhost:7206/Auth/ResetPassword?username={username}&token={token}&newPassword={newPassword}");
+            await Smtp.SendEmailAsync(user.Email, "Reset Password", $"Please reset your password by visiting this link: {"\n"} https://localhost:5001/Auth/ResetPassword?username={username}&token={token}&newPassword={newPassword}");
             results.Message = "Email sent successfully";
             results.IsSuccess = true;
             results.Username = username;

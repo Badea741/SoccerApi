@@ -1,6 +1,7 @@
 using AuthenticationServices.Helpers;
 using AutoMapper;
 using CommonGenericClasses;
+using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Soccer.Shared.Dtos;
@@ -15,7 +16,7 @@ namespace Soccer.Api.Controllers;
 
 public class TeamController : BaseController<Team, TeamDto>
 {
-    public TeamController(ITeamUnitOfWork unitOfWork, IMapper mapper, FluentValidation.AbstractValidator<Team> validator) : base(unitOfWork, mapper, validator)
+    public TeamController(ITeamUnitOfWork unitOfWork, IMapper mapper, IValidator<Team> validator) : base(unitOfWork, mapper, validator)
     {
     }
     [Authorize(Roles = Roles.User)]

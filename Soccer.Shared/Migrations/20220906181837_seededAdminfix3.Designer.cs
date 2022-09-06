@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Soccer.Shared;
 
@@ -10,9 +11,10 @@ using Soccer.Shared;
 namespace Soccer.Shared.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220906181837_seededAdminfix3")]
+    partial class seededAdminfix3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,14 +50,14 @@ namespace Soccer.Shared.Migrations
                         new
                         {
                             Id = "7a5746ec-1709-46f9-be21-ca259a143f89",
-                            ConcurrencyStamp = "5136ee7f-7e1d-444a-b805-57f5b85d26a4",
+                            ConcurrencyStamp = "36a700ba-6ccc-4208-81ab-11a01c66c4a3",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "9c6c3033-a1b8-4cfe-929e-3c31928b4607",
-                            ConcurrencyStamp = "259ba215-d3ad-47cf-8d94-98853cadfe8a",
+                            Id = "cbac8c23-24bf-4261-aaa7-520700744484",
+                            ConcurrencyStamp = "50743c61-5d4a-47f4-bafc-8d40ae36770a",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -142,6 +144,13 @@ namespace Soccer.Shared.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "7a5746ec-1709-46f9-be21-ca259a143f89",
+                            RoleId = "7a5746ec-1709-46f9-be21-ca259a143f89"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -244,6 +253,25 @@ namespace Soccer.Shared.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "7a5746ec-1709-46f9-be21-ca259a143f89",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "b6df03fe-f567-452d-b337-a1f9b6b85325",
+                            Email = "mohammed30981710@f-eng.tanta.edu.eg",
+                            EmailConfirmed = false,
+                            FullName = "Muhammad Badea",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "MOHAMMED30981710@F-ENG.TANTA.EDU.EG",
+                            NormalizedUserName = "BADEA",
+                            PasswordHash = "fe37ec234a480f030c83b2dfe456ac35df666cea98735c9aadd932fffcbaca8c",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "2704bb30-ffd7-4f26-9f87-4088a3b96488",
+                            TwoFactorEnabled = false,
+                            UserName = "Badea"
+                        });
                 });
 
             modelBuilder.Entity("Soccer.Shared.Entities.Player", b =>
@@ -260,7 +288,7 @@ namespace Soccer.Shared.Migrations
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2022, 9, 6, 20, 25, 41, 614, DateTimeKind.Local).AddTicks(5451));
+                        .HasDefaultValue(new DateTime(2022, 9, 6, 20, 18, 37, 143, DateTimeKind.Local).AddTicks(1054));
 
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime(6)");
@@ -329,7 +357,7 @@ namespace Soccer.Shared.Migrations
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2022, 9, 6, 20, 25, 41, 614, DateTimeKind.Local).AddTicks(6773));
+                        .HasDefaultValue(new DateTime(2022, 9, 6, 20, 18, 37, 143, DateTimeKind.Local).AddTicks(2376));
 
                     b.Property<DateTime>("Founded")
                         .HasColumnType("datetime(6)");

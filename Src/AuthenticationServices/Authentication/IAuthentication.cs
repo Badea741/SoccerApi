@@ -1,11 +1,12 @@
 using AuthenticationServices.Models;
+using Soccer.Shared.Dtos;
 using Soccer.Shared.Entities;
 
 namespace AuthenticationServices.Authentication;
 
 public interface IAuthentication
 {
-    Task<AuthenticationResults> RegisterAsync(RegisterModel registerModel);
+    Task<AuthenticationResults> RegisterAsync(ApplicationUserDto applicationUserDto);
     Task<AuthenticationResults> GetTokenAsync(Credentials credentials);
     Task<AuthenticationResults> ForgotPasswordAsync(string username, string newPassword);
     Task<AuthenticationResults> ResetPasswordAsync(string username, string token, string newPassword);

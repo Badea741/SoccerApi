@@ -18,11 +18,11 @@ public abstract class BaseController<TEntity, TDto> : ControllerBase
     protected readonly IBaseUnitOfWork<TEntity> _unitOfWork;
 
     protected IMapper _mapper;
-    protected readonly AbstractValidator<TEntity> _validator;
+    protected readonly IValidator<TEntity> _validator;
 
     public BaseController(IBaseUnitOfWork<TEntity> unitOfWork,
                           IMapper mapper,
-                          AbstractValidator<TEntity> validator
+                          IValidator<TEntity> validator
                          )
     {
         _unitOfWork = unitOfWork;
@@ -63,9 +63,9 @@ public abstract class BaseController<TEntity, TDto> : ControllerBase
     {
         TEntity entity = _mapper.Map<TEntity>(entityViewModel);
 
-        ValidationResult result = await _validator.ValidateAsync(entity);
-        if (!result.IsValid)
-            return BadRequest(result.Errors.Select(e => e.ErrorMessage));
+        ValidationResult results = await _validator.ValidateAsync(entity);
+        if (!results.IsValid)
+            return BadRequest(results.Errors.Select(e => e.ErrorMessage));
 
         entity = await _unitOfWork.CreateAsync(entity);
         try
@@ -83,6 +83,9 @@ public abstract class BaseController<TEntity, TDto> : ControllerBase
     [HttpPut]
     public virtual async Task<IActionResult> Put([FromBody] TEntity entity)
     {
+        var results = _validator.Validate(entity);
+        if (!results.IsValid)
+            return BadRequest(results.Errors.Select(e => e.ErrorMessage));
         entity = _unitOfWork.Update(entity);
         try
         {

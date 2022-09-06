@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Soccer.Shared;
 
@@ -10,9 +11,10 @@ using Soccer.Shared;
 namespace Soccer.Shared.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220906170839_AddedLocalizedTables")]
+    partial class AddedLocalizedTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,15 +49,15 @@ namespace Soccer.Shared.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "7a5746ec-1709-46f9-be21-ca259a143f89",
-                            ConcurrencyStamp = "5136ee7f-7e1d-444a-b805-57f5b85d26a4",
+                            Id = "77ea28bd-92f7-48fc-a0df-cb4207a4fdec",
+                            ConcurrencyStamp = "c5e2bf81-a375-4a42-82fc-71611bd17acf",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "9c6c3033-a1b8-4cfe-929e-3c31928b4607",
-                            ConcurrencyStamp = "259ba215-d3ad-47cf-8d94-98853cadfe8a",
+                            Id = "695691fb-edba-4901-a04a-36eda57988c5",
+                            ConcurrencyStamp = "b0664270-8ced-4bba-a912-8eac764a2bcb",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -260,7 +262,7 @@ namespace Soccer.Shared.Migrations
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2022, 9, 6, 20, 25, 41, 614, DateTimeKind.Local).AddTicks(5451));
+                        .HasDefaultValue(new DateTime(2022, 9, 6, 19, 8, 39, 350, DateTimeKind.Local).AddTicks(8631));
 
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime(6)");
@@ -329,7 +331,7 @@ namespace Soccer.Shared.Migrations
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2022, 9, 6, 20, 25, 41, 614, DateTimeKind.Local).AddTicks(6773));
+                        .HasDefaultValue(new DateTime(2022, 9, 6, 19, 8, 39, 350, DateTimeKind.Local).AddTicks(9802));
 
                     b.Property<DateTime>("Founded")
                         .HasColumnType("datetime(6)");
