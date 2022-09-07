@@ -11,7 +11,7 @@ using Soccer.Shared;
 namespace Soccer.Shared.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220904211947_init")]
+    [Migration("20220907134702_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -45,6 +45,22 @@ namespace Soccer.Shared.Migrations
                         .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "7a5746ec-1709-46f9-be21-ca259a143f88",
+                            ConcurrencyStamp = "3721758f-3c4c-4160-9e10-85c8d945559e",
+                            Name = "User",
+                            NormalizedName = "USER"
+                        },
+                        new
+                        {
+                            Id = "1eff24d7-208c-4fdc-85e2-decd064a98ce",
+                            ConcurrencyStamp = "ef423955-9e67-4a4b-a3c3-b41f3322e643",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -128,6 +144,18 @@ namespace Soccer.Shared.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "19a3c4ad-4a95-4327-9cdc-9dd4f4478d6c",
+                            RoleId = "7a5746ec-1709-46f9-be21-ca259a143f88"
+                        },
+                        new
+                        {
+                            UserId = "19a3c4ad-4a95-4327-9cdc-9dd4f4478d6c",
+                            RoleId = "1eff24d7-208c-4fdc-85e2-decd064a98ce"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -149,7 +177,22 @@ namespace Soccer.Shared.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Soccer.Api.Entities.ApplicationUser", b =>
+            modelBuilder.Entity("PlayerTeam", b =>
+                {
+                    b.Property<Guid>("PlayersId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("TeamsId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("PlayersId", "TeamsId");
+
+                    b.HasIndex("TeamsId");
+
+                    b.ToTable("PlayerTeam");
+                });
+
+            modelBuilder.Entity("Soccer.Shared.Entities.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("varchar(255)");
@@ -161,9 +204,6 @@ namespace Soccer.Shared.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("longtext");
 
-                    b.Property<DateOnly>("DateOfBirth")
-                        .HasColumnType("date");
-
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("varchar(256)");
@@ -171,19 +211,15 @@ namespace Soccer.Shared.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<byte[]>("Image")
+                    b.Property<string>("FullName")
                         .IsRequired()
-                        .HasColumnType("longblob");
+                        .HasColumnType("longtext");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<string>("Nationality")
-                        .IsRequired()
-                        .HasColumnType("longtext");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
@@ -222,6 +258,25 @@ namespace Soccer.Shared.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "19a3c4ad-4a95-4327-9cdc-9dd4f4478d6c",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "aede512e-17d0-429c-b1fb-5973ae0da6aa",
+                            Email = "admin@localhost.com",
+                            EmailConfirmed = false,
+                            FullName = "",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ADMIN@LOCALHOST.COM",
+                            NormalizedUserName = "ADMIN",
+                            PasswordHash = "AQAAAAEAACcQAAAAENpUpFpRffMGLlKxCCyt6I6bBtcVjlM2hw8Cu2+R6C0JkQqza4pMBnU2H2E4gaVSzQ==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "7ccd3106-fb84-4dd4-b2dd-425550a85ea1",
+                            TwoFactorEnabled = false,
+                            UserName = "admin"
+                        });
                 });
 
             modelBuilder.Entity("Soccer.Shared.Entities.Player", b =>
@@ -238,10 +293,10 @@ namespace Soccer.Shared.Migrations
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2022, 9, 4, 23, 19, 46, 941, DateTimeKind.Local).AddTicks(2970));
+                        .HasDefaultValue(new DateTime(2022, 9, 7, 15, 47, 2, 457, DateTimeKind.Local).AddTicks(7786));
 
-                    b.Property<DateOnly>("DateOfBirth")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("DateOfBirth")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<byte[]>("Image")
                         .HasColumnType("longblob");
@@ -261,14 +316,14 @@ namespace Soccer.Shared.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Player");
+                    b.ToTable("players", (string)null);
 
                     b.HasData(
                         new
                         {
                             Id = new Guid("19a3c4ad-4a95-4327-9cdc-9dd4f4478d6c"),
                             CreationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateOfBirth = new DateOnly(1, 1, 1),
+                            DateOfBirth = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified).AddTicks(1987),
                             Name = "Messi",
                             Nationality = "Argentine",
                             TeamId = new Guid("e4f8840a-04c3-4ef8-8df2-c5176967ce84")
@@ -277,50 +332,10 @@ namespace Soccer.Shared.Migrations
                         {
                             Id = new Guid("7cbad38c-3289-4857-a832-993ca4d672b7"),
                             CreationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateOfBirth = new DateOnly(1, 1, 1),
+                            DateOfBirth = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified).AddTicks(1985),
                             Name = "Ronaldo",
                             Nationality = "Spain",
                             TeamId = new Guid("c059bf61-5521-4c7d-aa1d-2fdfddfaa3b1")
-                        });
-                });
-
-            modelBuilder.Entity("Soccer.Shared.Entities.PlayerTeam", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<DateTime>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("timestamp(6)");
-
-                    b.Property<DateTime>("CreationDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2022, 9, 4, 23, 19, 46, 941, DateTimeKind.Local).AddTicks(4021));
-
-                    b.Property<Guid>("PlayerId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid>("TeamId")
-                        .HasColumnType("char(36)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PlayerId");
-
-                    b.HasIndex("TeamId");
-
-                    b.ToTable("PlayerTeam");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("ed1e3370-596e-4c54-98e2-0ee720a40d2c"),
-                            CreationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PlayerId = new Guid("19a3c4ad-4a95-4327-9cdc-9dd4f4478d6c"),
-                            TeamId = new Guid("7a5746ec-1709-46f9-be21-ca259a143f89")
                         });
                 });
 
@@ -341,15 +356,16 @@ namespace Soccer.Shared.Migrations
 
                     b.Property<string>("Country")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
 
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2022, 9, 4, 23, 19, 46, 941, DateTimeKind.Local).AddTicks(6522));
+                        .HasDefaultValue(new DateTime(2022, 9, 7, 15, 47, 2, 457, DateTimeKind.Local).AddTicks(9111));
 
-                    b.Property<DateOnly>("Founded")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("Founded")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<byte[]>("Logo")
                         .HasColumnType("longblob");
@@ -360,7 +376,7 @@ namespace Soccer.Shared.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Team");
+                    b.ToTable("teams", (string)null);
 
                     b.HasData(
                         new
@@ -369,7 +385,7 @@ namespace Soccer.Shared.Migrations
                             CoachName = "Mikel Arteta",
                             Country = "England",
                             CreationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Founded = new DateOnly(1, 1, 1),
+                            Founded = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified).AddTicks(1886),
                             Name = "Arsenal"
                         },
                         new
@@ -378,7 +394,7 @@ namespace Soccer.Shared.Migrations
                             CoachName = "Thomas Tuchel",
                             Country = "England",
                             CreationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Founded = new DateOnly(1, 1, 1),
+                            Founded = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified).AddTicks(1905),
                             Name = "Chelsea"
                         },
                         new
@@ -387,7 +403,7 @@ namespace Soccer.Shared.Migrations
                             CoachName = "Jurgen Klopp",
                             Country = "England",
                             CreationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Founded = new DateOnly(1, 1, 1),
+                            Founded = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified).AddTicks(1892),
                             Name = "Liverpool"
                         },
                         new
@@ -396,7 +412,7 @@ namespace Soccer.Shared.Migrations
                             CoachName = "Pep Guardiola",
                             Country = "England",
                             CreationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Founded = new DateOnly(1, 1, 1),
+                            Founded = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified).AddTicks(1880),
                             Name = "Manchester City"
                         },
                         new
@@ -405,7 +421,7 @@ namespace Soccer.Shared.Migrations
                             CoachName = "Ole Gunnar Solskjaer",
                             Country = "England",
                             CreationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Founded = new DateOnly(1, 1, 1),
+                            Founded = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified).AddTicks(1878),
                             Name = "Manchester United"
                         },
                         new
@@ -414,7 +430,7 @@ namespace Soccer.Shared.Migrations
                             CoachName = "Jose Mourinho",
                             Country = "England",
                             CreationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Founded = new DateOnly(1, 1, 1),
+                            Founded = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified).AddTicks(1882),
                             Name = "Tottenham Hotspur"
                         },
                         new
@@ -423,7 +439,7 @@ namespace Soccer.Shared.Migrations
                             CoachName = "Carlo Ancelotti",
                             Country = "Spain",
                             CreationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Founded = new DateOnly(1, 1, 1),
+                            Founded = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified).AddTicks(1902),
                             Name = "Real Madrid"
                         },
                         new
@@ -432,7 +448,7 @@ namespace Soccer.Shared.Migrations
                             CoachName = "Ronald Koeman",
                             Country = "Spain",
                             CreationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Founded = new DateOnly(1, 1, 1),
+                            Founded = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified).AddTicks(1899),
                             Name = "Barcelona"
                         });
                 });
@@ -448,7 +464,7 @@ namespace Soccer.Shared.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Soccer.Api.Entities.ApplicationUser", null)
+                    b.HasOne("Soccer.Shared.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -457,7 +473,7 @@ namespace Soccer.Shared.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Soccer.Api.Entities.ApplicationUser", null)
+                    b.HasOne("Soccer.Shared.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -472,7 +488,7 @@ namespace Soccer.Shared.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Soccer.Api.Entities.ApplicationUser", null)
+                    b.HasOne("Soccer.Shared.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -481,40 +497,26 @@ namespace Soccer.Shared.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Soccer.Api.Entities.ApplicationUser", null)
+                    b.HasOne("Soccer.Shared.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Soccer.Shared.Entities.PlayerTeam", b =>
+            modelBuilder.Entity("PlayerTeam", b =>
                 {
-                    b.HasOne("Soccer.Shared.Entities.Player", "Player")
-                        .WithMany("PlayerTeams")
-                        .HasForeignKey("PlayerId")
+                    b.HasOne("Soccer.Shared.Entities.Player", null)
+                        .WithMany()
+                        .HasForeignKey("PlayersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Soccer.Shared.Entities.Team", "Team")
-                        .WithMany("PlayerTeams")
-                        .HasForeignKey("TeamId")
+                    b.HasOne("Soccer.Shared.Entities.Team", null)
+                        .WithMany()
+                        .HasForeignKey("TeamsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Player");
-
-                    b.Navigation("Team");
-                });
-
-            modelBuilder.Entity("Soccer.Shared.Entities.Player", b =>
-                {
-                    b.Navigation("PlayerTeams");
-                });
-
-            modelBuilder.Entity("Soccer.Shared.Entities.Team", b =>
-                {
-                    b.Navigation("PlayerTeams");
                 });
 #pragma warning restore 612, 618
         }

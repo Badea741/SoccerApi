@@ -1,6 +1,4 @@
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Soccer.Shared.Entities;
 
 public static class Seed
 {
@@ -20,15 +18,36 @@ public static class Seed
             new Player { Id = new Guid("19a3c4ad-4a95-4327-9cdc-9dd4f4478d6c"), Name = "Messi", Nationality = "Argentine", TeamId = new Guid("e4f8840a-04c3-4ef8-8df2-c5176967ce84"), DateOfBirth = new(1987), Image = null! },
             new Player { Id = new Guid("7cbad38c-3289-4857-a832-993ca4d672b7"), Name = "Ronaldo", Nationality = "Spain", TeamId = new Guid("c059bf61-5521-4c7d-aa1d-2fdfddfaa3b1"), DateOfBirth = new(1985), Image = null! }
         );
-
-        return modelBuilder;
-    }
-    public static ModelBuilder SeedRoles(this ModelBuilder modelBuilder)
-    {
         modelBuilder.Entity<IdentityRole>().HasData(
-            new IdentityRole { Id = "7a5746ec-1709-46f9-be21-ca259a143f89", Name = "Admin", NormalizedName = "ADMIN" },
-            new IdentityRole { Name = "User", NormalizedName = "USER" }
+            new IdentityRole { Id = "7a5746ec-1709-46f9-be21-ca259a143f88", Name = "User", NormalizedName = "USER" }
         );
+        modelBuilder.Entity<IdentityRole>().HasData(
+           new IdentityRole { Id = "1eff24d7-208c-4fdc-85e2-decd064a98ce", Name = "Admin", NormalizedName = "ADMIN" }
+       );
+
+
+        modelBuilder.Entity<ApplicationUser>().HasData(new ApplicationUser
+        {
+            Id = "19a3c4ad-4a95-4327-9cdc-9dd4f4478d6c",
+            UserName = "admin",
+            NormalizedUserName = "ADMIN",
+            Email = "admin@localhost.com",
+            NormalizedEmail = "ADMIN@LOCALHOST.COM",
+            PasswordHash = new PasswordHasher<ApplicationUser>().HashPassword(null!, "P@ssw0rd123"),
+        });
+        modelBuilder.Entity<IdentityUserRole<string>>().HasData(
+            new IdentityUserRole<string>
+            {
+                RoleId = "7a5746ec-1709-46f9-be21-ca259a143f88",//user
+                UserId = "19a3c4ad-4a95-4327-9cdc-9dd4f4478d6c"
+            },
+
+            new IdentityUserRole<string>
+            {
+                RoleId = "1eff24d7-208c-4fdc-85e2-decd064a98ce",//admin
+                UserId = "19a3c4ad-4a95-4327-9cdc-9dd4f4478d6c"
+            });
+
         return modelBuilder;
     }
 }

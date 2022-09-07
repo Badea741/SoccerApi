@@ -47,17 +47,17 @@ namespace Soccer.Shared.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "7a5746ec-1709-46f9-be21-ca259a143f89",
-                            ConcurrencyStamp = "5136ee7f-7e1d-444a-b805-57f5b85d26a4",
-                            Name = "Admin",
-                            NormalizedName = "ADMIN"
+                            Id = "7a5746ec-1709-46f9-be21-ca259a143f88",
+                            ConcurrencyStamp = "3721758f-3c4c-4160-9e10-85c8d945559e",
+                            Name = "User",
+                            NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "9c6c3033-a1b8-4cfe-929e-3c31928b4607",
-                            ConcurrencyStamp = "259ba215-d3ad-47cf-8d94-98853cadfe8a",
-                            Name = "User",
-                            NormalizedName = "USER"
+                            Id = "1eff24d7-208c-4fdc-85e2-decd064a98ce",
+                            ConcurrencyStamp = "ef423955-9e67-4a4b-a3c3-b41f3322e643",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
                         });
                 });
 
@@ -142,6 +142,18 @@ namespace Soccer.Shared.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "19a3c4ad-4a95-4327-9cdc-9dd4f4478d6c",
+                            RoleId = "7a5746ec-1709-46f9-be21-ca259a143f88"
+                        },
+                        new
+                        {
+                            UserId = "19a3c4ad-4a95-4327-9cdc-9dd4f4478d6c",
+                            RoleId = "1eff24d7-208c-4fdc-85e2-decd064a98ce"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -244,6 +256,25 @@ namespace Soccer.Shared.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "19a3c4ad-4a95-4327-9cdc-9dd4f4478d6c",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "aede512e-17d0-429c-b1fb-5973ae0da6aa",
+                            Email = "admin@localhost.com",
+                            EmailConfirmed = false,
+                            FullName = "",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ADMIN@LOCALHOST.COM",
+                            NormalizedUserName = "ADMIN",
+                            PasswordHash = "AQAAAAEAACcQAAAAENpUpFpRffMGLlKxCCyt6I6bBtcVjlM2hw8Cu2+R6C0JkQqza4pMBnU2H2E4gaVSzQ==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "7ccd3106-fb84-4dd4-b2dd-425550a85ea1",
+                            TwoFactorEnabled = false,
+                            UserName = "admin"
+                        });
                 });
 
             modelBuilder.Entity("Soccer.Shared.Entities.Player", b =>
@@ -260,7 +291,7 @@ namespace Soccer.Shared.Migrations
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2022, 9, 6, 20, 25, 41, 614, DateTimeKind.Local).AddTicks(5451));
+                        .HasDefaultValue(new DateTime(2022, 9, 7, 15, 47, 2, 457, DateTimeKind.Local).AddTicks(7786));
 
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime(6)");
@@ -329,7 +360,7 @@ namespace Soccer.Shared.Migrations
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2022, 9, 6, 20, 25, 41, 614, DateTimeKind.Local).AddTicks(6773));
+                        .HasDefaultValue(new DateTime(2022, 9, 7, 15, 47, 2, 457, DateTimeKind.Local).AddTicks(9111));
 
                     b.Property<DateTime>("Founded")
                         .HasColumnType("datetime(6)");

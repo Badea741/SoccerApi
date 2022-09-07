@@ -15,6 +15,5 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
         base.OnModelCreating(builder);
         builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
         builder.SeedData();
-        builder.SeedRoles();
     }
 }
