@@ -11,7 +11,7 @@ namespace Soccer.Shared.Dtos
         public Guid TeamId { get; set; }
         [Required]
         public DateTime DateOfBirth { get; set; }
-        public byte[]? Image { get; set; } = null!;
-        
+        public string? Image { get; set; } = string.Empty;
+
     }
 }

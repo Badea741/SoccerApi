@@ -12,7 +12,7 @@ public class TeamDto : BaseDto
     public DateTime Founded { get; set; }
     [Required]
     public string CoachName { get; set; } = string.Empty;
-    public byte[]? Logo { get; set; }
+    public string? Logo { get; set; } = string.Empty;
     public virtual ICollection<PlayerDto>? Players { get; set; }
 
 }

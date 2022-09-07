@@ -1,9 +1,5 @@
-namespace Soccer.Shared.Repositories
+namespace Soccer.Shared.Repositories;
+public interface ITeamRepository : IBaseRepo<Team>
 {
-    using CommonGenericClasses;
-    using Soccer.Shared.Entities;
 
-    public interface ITeamRepository : IBaseRepo<Team>
-    {
-    }
 }

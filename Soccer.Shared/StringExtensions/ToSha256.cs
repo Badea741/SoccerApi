@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Soccer.Shared.StringExtensions;
 
-public static partial class StringExtensions
+public static partial class Sha256
 {
     public static string ToSha256(this string input)
     {

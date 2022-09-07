@@ -1,6 +1,5 @@
 namespace Soccer.Shared.Entities.Configurations;
 
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Soccer.Shared.Entities;
 public class TeamConfiguration : BaseConfiguration<Team>
