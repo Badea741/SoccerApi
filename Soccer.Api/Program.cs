@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Soccer.Api.ServiceConfigurations;
+using Soccer.Shared;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,20 +32,29 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger(
 
-    );
-    app.UseSwaggerUI(options =>
-    {
-        options.SwaggerEndpoint("/swagger/v1/swagger.json", "SoccerApiV1");
-        options.RoutePrefix = string.Empty;
-    });
 }
 
+using (var serviceScope = app.Services.GetService<IServiceScopeFactory>()?.CreateScope())
+{
+    var context = serviceScope?.ServiceProvider.GetRequiredService<ApplicationDbContext>()!;
+
+    context.Database.Migrate();
+
+}
+
+app.UseDeveloperExceptionPage();
 app.UseRequestLocalization(app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
 app.UseCors(CorsConfiguration.CorsPolicyName);
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
+app.UseSwagger(
 
+    );
+app.UseSwaggerUI(options =>
+{
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "SoccerApiV1");
+    options.RoutePrefix = string.Empty;
+});
 app.UseAuthentication();
 app.UseAuthorization();
 
