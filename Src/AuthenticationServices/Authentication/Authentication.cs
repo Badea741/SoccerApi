@@ -5,12 +5,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Soccer.Shared.Entities;
 namespace AuthenticationServices.Authentication;
-public partial class Authentication : IAuthentication
+public partial class Authentication<TUser> : IAuthentication<TUser> where TUser : IdentityUser
 {
-    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly UserManager<TUser> _userManager;
     private readonly IMapper _mapper;
     private readonly Jwt _jwt;
-    public Authentication(UserManager<ApplicationUser> userManager, IMapper mapper, IOptions<Jwt> jwt)
+    public Authentication(UserManager<TUser> userManager, IMapper mapper, IOptions<Jwt> jwt)
     {
         _userManager = userManager;
         _mapper = mapper;

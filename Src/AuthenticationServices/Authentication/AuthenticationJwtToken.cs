@@ -1,13 +1,13 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
-using Soccer.Shared.Entities;
 
 namespace AuthenticationServices.Authentication;
-public partial class Authentication
+public partial class Authentication<TUser> where TUser:IdentityUser
 {
-    private async Task<JwtSecurityToken> GenerateJwtTokenAsync(ApplicationUser user)
+    protected virtual async Task<JwtSecurityToken> GenerateJwtTokenAsync(TUser user)
     {
 
         var userClaims = await _userManager.GetClaimsAsync(user);
@@ -22,7 +22,6 @@ public partial class Authentication
             new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new Claim(ClaimTypes.NameIdentifier, user.UserName),
-            new Claim(ClaimTypes.Name, user.FullName)
         }
         .Union(userClaims)
         .Union(RoleClaims);

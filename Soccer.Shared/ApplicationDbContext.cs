@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Soccer.Shared.Entities;
+using Microsoft.AspNetCore.Identity;
 
 namespace Soccer.Shared;
 public class ApplicationDbContext : IdentityDbContext<ApplicationUser>

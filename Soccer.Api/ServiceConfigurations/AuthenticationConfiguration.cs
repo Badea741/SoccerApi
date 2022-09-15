@@ -2,7 +2,9 @@ using System.Text;
 using AuthenticationServices.Authentication;
 using AuthenticationServices.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+using Soccer.Shared.Entities;
 
 namespace Soccer.Api.ServiceConfigurations;
 public static class AuthenticationConfiguration
@@ -26,7 +28,7 @@ public static class AuthenticationConfiguration
             };
         });
         services.Configure<Jwt>(configuration.GetSection("Jwt"));
-        services.AddScoped<IAuthentication, Authentication>();
+        services.AddScoped<IAuthentication<ApplicationUser>, Authentication<ApplicationUser>>();
         return services;
     }
 }

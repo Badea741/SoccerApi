@@ -1,10 +1,10 @@
 using AuthenticationServices.Models;
+using Microsoft.AspNetCore.Identity;
 using Soccer.Shared.Dtos;
-using Soccer.Shared.Entities;
 
 namespace AuthenticationServices.Authentication;
 
-public interface IAuthentication
+public interface IAuthentication<TUser> where TUser : IdentityUser
 {
     Task<AuthenticationResults> RegisterAsync(ApplicationUserDto applicationUserDto);
     Task<AuthenticationResults> GetTokenAsync(Credentials credentials);
@@ -12,7 +12,7 @@ public interface IAuthentication
     Task<AuthenticationResults> ResetPasswordAsync(string username, string token, string newPassword);
     Task<AuthenticationResults> AddUserToRoleAsync(string username, string role);
     Task<AuthenticationResults> RemoveUserFromRoleAsync(string username, string role);
-    List<ApplicationUser> GetAllUsers();
-    Task<List<ApplicationUser>> GetUsersInRoleAsync(string role);
+    List<TUser> GetAllUsers();
+    Task<List<TUser>> GetUsersInRoleAsync(string role);
 
 }

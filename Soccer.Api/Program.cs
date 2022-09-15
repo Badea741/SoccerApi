@@ -30,10 +30,10 @@ builder.Services.AddLocalizationConfiguration();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+// if (app.Environment.IsDevelopment())
+// {
 
-}
+// }
 
 using (var serviceScope = app.Services.GetService<IServiceScopeFactory>()?.CreateScope())
 {
@@ -47,9 +47,7 @@ app.UseDeveloperExceptionPage();
 app.UseRequestLocalization(app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
 app.UseCors(CorsConfiguration.CorsPolicyName);
 // app.UseHttpsRedirection();
-app.UseSwagger(
-
-    );
+app.UseSwagger();
 app.UseSwaggerUI(options =>
 {
     options.SwaggerEndpoint("/swagger/v1/swagger.json", "SoccerApiV1");
@@ -59,5 +57,4 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-
 app.Run();

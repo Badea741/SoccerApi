@@ -1,8 +1,9 @@
 using AuthenticationServices.Helpers;
 using AuthenticationServices.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace AuthenticationServices.Authentication;
-public partial class Authentication
+public partial class Authentication<TUser> where TUser:IdentityUser
 {
     public async Task<AuthenticationResults> AddUserToRoleAsync(string username, string role)
     {

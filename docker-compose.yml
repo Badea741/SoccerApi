@@ -4,26 +4,34 @@ version: '3.4'
 
 services:
   server:
-    image: badea741/soccerapi
+    image: soccerapi:build
     build:
       context: .
       dockerfile: Soccer.Api/Dockerfile
     ports:
       - 5000:5000
-    command: ["dotnet", "ef","--startup-project=../Soccer.Api/Soccer.Api.csproj", "database update"]
     depends_on:
       - db
+    networks:
+      - server-database
+    volumes:
+      - .:/src
 
   db:
      image: mysql/mysql-server:latest
      environment:
-       MYSQL_RANDOM_ROOT_PASSWORD: 1
+       MYSQL_ROOT_PASSWORD: 2510203121
        MYSQL_DATABASE: SoccerDb
-       MYSQL_USER: root
+      #  MYSQL_USER: root
        MYSQL_PASSWORD: 2510203121
+       
      volumes:
-       - dbdata2:/var/lib/mysql
-       - ./_MySQL_Init_Script:/docker-entrypoint-initdb.d
+       - dbvolum1:/var/lib/mysql
+     networks:
+       - server-database
      restart: always
 volumes:
-    dbdata2:
+    dbvolum1:
+networks:
+  server-database:
+    driver: bridge

@@ -1,4 +1,3 @@
-using CommonGenericClasses;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Soccer.Shared.Entities.Configurations;

@@ -1,9 +1,10 @@
 using System.Web;
 using AuthenticationServices.Models;
 using EmailSender;
+using Microsoft.AspNetCore.Identity;
 
 namespace AuthenticationServices.Authentication;
-public partial class Authentication
+public partial class Authentication<TUser> where TUser:IdentityUser
 {
     public async Task<AuthenticationResults> ForgotPasswordAsync(string username, string newPassword)
     {

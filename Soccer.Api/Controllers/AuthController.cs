@@ -6,6 +6,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Soccer.Shared.Dtos;
+using Soccer.Shared.Entities;
 
 namespace Soccer.Api.Controllers;
 [ApiController]
@@ -13,10 +14,10 @@ namespace Soccer.Api.Controllers;
 [Authorize(AuthenticationSchemes = "Bearer")]
 public class AuthController : ControllerBase
 {
-    private readonly IAuthentication _auth;
+    private readonly IAuthentication<ApplicationUser> _auth;
     private readonly IMapper _mapper;
 
-    public AuthController(IAuthentication auth, IMapper mapper)
+    public AuthController(IAuthentication<ApplicationUser> auth, IMapper mapper)
     {
         _auth = auth;
         _mapper = mapper;
