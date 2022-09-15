@@ -8,7 +8,7 @@ public partial class Authentication<TUser> where TUser : IdentityUser
     {
         return _userManager.Users.ToList();
     }
-    public async Task<List<TUser>> GetUsersInRoleAsync(string role)
+    public virtual async Task<List<TUser>> GetUsersInRoleAsync(string role)
     {
         if (!Roles.AvailableRoles.Contains(role))
             throw new ArgumentException("Role does not exist");

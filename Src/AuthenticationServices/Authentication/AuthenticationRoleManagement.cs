@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity;
 namespace AuthenticationServices.Authentication;
 public partial class Authentication<TUser> where TUser:IdentityUser
 {
-    public async Task<AuthenticationResults> AddUserToRoleAsync(string username, string role)
+    public virtual async Task<AuthenticationResults> AddUserToRoleAsync(string username, string role)
     {
         var results = new AuthenticationResults();
         if (!Roles.AvailableRoles.Contains(role))

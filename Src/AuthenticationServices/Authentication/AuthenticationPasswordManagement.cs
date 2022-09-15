@@ -4,9 +4,9 @@ using EmailSender;
 using Microsoft.AspNetCore.Identity;
 
 namespace AuthenticationServices.Authentication;
-public partial class Authentication<TUser> where TUser:IdentityUser
+public partial class Authentication<TUser> where TUser : IdentityUser
 {
-    public async Task<AuthenticationResults> ForgotPasswordAsync(string username, string newPassword)
+    public virtual async Task<AuthenticationResults> ForgotPasswordAsync(string username, string newPassword)
     {
         var results = new AuthenticationResults();
         var user = await _userManager.FindByNameAsync(username);
@@ -34,7 +34,7 @@ public partial class Authentication<TUser> where TUser:IdentityUser
             return results;
         }
     }
-    public async Task<AuthenticationResults> ResetPasswordAsync(string username, string token, string password)
+    public virtual async Task<AuthenticationResults> ResetPasswordAsync(string username, string token, string password)
     {
         var results = new AuthenticationResults();
         var user = await _userManager.FindByNameAsync(username);

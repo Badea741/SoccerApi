@@ -16,7 +16,7 @@ public partial class Authentication<TUser> : IAuthentication<TUser> where TUser 
         _jwt = jwt.Value;
     }
 
-    public async Task<AuthenticationResults> GetTokenAsync(Credentials credentials)
+    public virtual async Task<AuthenticationResults> GetTokenAsync(Credentials credentials)
     {
         AuthenticationResults results = new AuthenticationResults();
         var user = await _userManager.FindByNameAsync(credentials.UserName);

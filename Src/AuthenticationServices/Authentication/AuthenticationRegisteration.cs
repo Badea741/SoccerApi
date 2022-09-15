@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity;
 namespace AuthenticationServices.Authentication;
 public partial class Authentication<TUser> where TUser : IdentityUser
 {
-    public async Task<AuthenticationResults> RegisterAsync(TUser applicationUserDto, string password)
+    public virtual async Task<AuthenticationResults> RegisterAsync(TUser applicationUserDto, string password)
     {
         if (await _userManager.FindByEmailAsync(applicationUserDto.Email) != null)
             return new AuthenticationResults

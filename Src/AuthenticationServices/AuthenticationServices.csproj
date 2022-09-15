@@ -12,8 +12,4 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.9" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.22.1" />
   </ItemGroup>
-   <ItemGroup>
-    <ProjectReference Include="../EmailSender/EmailSender.csproj" />
-  </ItemGroup>
-
 </Project>
