@@ -1,6 +1,5 @@
 using AuthenticationServices.Helpers;
 using Microsoft.AspNetCore.Identity;
-using Soccer.Shared.Entities;
 
 namespace AuthenticationServices.Authentication;
 public partial class Authentication<TUser> where TUser : IdentityUser

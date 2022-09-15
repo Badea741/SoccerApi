@@ -1,4 +1,3 @@
-using System.Web;
 using AuthenticationServices.Authentication;
 using AuthenticationServices.Helpers;
 using AuthenticationServices.Models;
@@ -26,7 +25,8 @@ public class AuthController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Register(ApplicationUserDto applicationUserDto)
     {
-        var result = await _auth.RegisterAsync(applicationUserDto);
+        var user = _mapper.Map<ApplicationUser>(applicationUserDto);
+        var result = await _auth.RegisterAsync(user, applicationUserDto.Password);
         if (!result.IsSuccess)
             return BadRequest(result);
         return Ok(result);

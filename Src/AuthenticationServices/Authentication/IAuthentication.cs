@@ -1,12 +1,11 @@
 using AuthenticationServices.Models;
 using Microsoft.AspNetCore.Identity;
-using Soccer.Shared.Dtos;
 
 namespace AuthenticationServices.Authentication;
 
 public interface IAuthentication<TUser> where TUser : IdentityUser
 {
-    Task<AuthenticationResults> RegisterAsync(ApplicationUserDto applicationUserDto);
+    Task<AuthenticationResults> RegisterAsync(TUser applicationUserDto, string password);
     Task<AuthenticationResults> GetTokenAsync(Credentials credentials);
     Task<AuthenticationResults> ForgotPasswordAsync(string username, string newPassword);
     Task<AuthenticationResults> ResetPasswordAsync(string username, string token, string newPassword);

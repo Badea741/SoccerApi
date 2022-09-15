@@ -3,7 +3,6 @@ using AuthenticationServices.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
-using Soccer.Shared.Entities;
 namespace AuthenticationServices.Authentication;
 public partial class Authentication<TUser> : IAuthentication<TUser> where TUser : IdentityUser
 {

@@ -2,26 +2,24 @@ using System.IdentityModel.Tokens.Jwt;
 using AuthenticationServices.Helpers;
 using AuthenticationServices.Models;
 using Microsoft.AspNetCore.Identity;
-using Soccer.Shared.Dtos;
-using Soccer.Shared.Entities;
 
 namespace AuthenticationServices.Authentication;
 public partial class Authentication<TUser> where TUser : IdentityUser
 {
-    public async Task<AuthenticationResults> RegisterAsync(ApplicationUserDto applicationUserDto)
+    public async Task<AuthenticationResults> RegisterAsync(TUser applicationUserDto, string password)
     {
         if (await _userManager.FindByEmailAsync(applicationUserDto.Email) != null)
             return new AuthenticationResults
             {
                 Message = "Email is already in use",
             };
-        if (await _userManager.FindByNameAsync(applicationUserDto.Username) != null)
+        if (await _userManager.FindByNameAsync(applicationUserDto.UserName) != null)
             return new AuthenticationResults
             {
                 Message = "Username is already in use",
             };
         var user = _mapper.Map<TUser>(applicationUserDto);
-        var result = await _userManager.CreateAsync(user, applicationUserDto.Password);
+        var result = await _userManager.CreateAsync(user, password);
         var errorMessages = result.Errors.Select(e => e.Description);
         if (!result.Succeeded)
             return new AuthenticationResults
