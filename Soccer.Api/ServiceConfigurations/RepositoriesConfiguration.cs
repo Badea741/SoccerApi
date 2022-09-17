@@ -1,5 +1,4 @@
 using Soccer.Shared.Repositories;
-
 namespace Soccer.Api.ServiceConfigurations
 {
     public static class RepositoriesConfiguration
