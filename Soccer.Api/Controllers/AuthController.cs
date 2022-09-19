@@ -1,9 +1,11 @@
+using System.Security.Claims;
 using AuthenticationServices.Authentication;
 using AuthenticationServices.Helpers;
 using AuthenticationServices.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using Soccer.Shared.Dtos;
 using Soccer.Shared.Entities;
 
@@ -15,11 +17,13 @@ public class AuthController : ControllerBase
 {
     private readonly IAuthentication<ApplicationUser> _auth;
     private readonly IMapper _mapper;
+    private readonly Serilog.ILogger _logger;
 
-    public AuthController(IAuthentication<ApplicationUser> auth, IMapper mapper)
+    public AuthController(IAuthentication<ApplicationUser> auth, IMapper mapper, Serilog.ILogger logger)
     {
         _auth = auth;
         _mapper = mapper;
+        _logger = logger;
     }
     [AllowAnonymous]
     [HttpPost]
@@ -35,6 +39,7 @@ public class AuthController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> GetToken(Credentials credentials)
     {
+        _logger.Information("GetToken");
         var result = await _auth.GetTokenAsync(credentials);
         if (!result.IsSuccess)
             return BadRequest(result);
@@ -44,7 +49,8 @@ public class AuthController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> ForgotPassword([FromQuery] string username, string newPassword)
     {
-        var results = await _auth.ForgotPasswordAsync(username, newPassword);
+        var results = await _auth.ForgotPasswordAsync(username, newPassword, Request.Host.Value);
+        Log.Information(Request.Host.Value);
         if (!results.IsSuccess)
             return BadRequest(results);
         return Ok(results);
@@ -53,7 +59,6 @@ public class AuthController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> ResetPassword(string username, string token, string newPassword)
     {
-
         var results = await _auth.ResetPasswordAsync(username, token, newPassword);
         if (!results.IsSuccess)
             return BadRequest(results);
@@ -72,12 +77,13 @@ public class AuthController : ControllerBase
     [HttpDelete]
     public async Task<IActionResult> RemoveUserFromRole([FromQuery] string username, string role)
     {
+        _logger.Warning($"user '{User.Claims.Where(c => c.Type == ClaimTypes.NameIdentifier).FirstOrDefault()!.ToString().Split()[^1]}' is trying to remove user '{username}' from role '{role}'");
         var results = await _auth.RemoveUserFromRoleAsync(username, role);
         if (!results.IsSuccess)
             return BadRequest(results);
         return Ok(results);
     }
-    [Authorize(Roles = Roles.Admin)]
+    // [Authorize(Roles = Roles.Admin)]
     [HttpGet]
     public IActionResult GetUsers()
     {
@@ -86,7 +92,7 @@ public class AuthController : ControllerBase
             return BadRequest(results);
         return Ok(results.Select(u => _mapper.Map<ApplicationUserDto>(u)));
     }
-    [Authorize(Roles = Roles.Admin)]
+    // [Authorize(Roles = Roles.Admin)]
     [HttpGet]
     public async Task<IActionResult> GetUsersInRoles([FromQuery] string role)
     {

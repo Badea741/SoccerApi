@@ -4,7 +4,7 @@ EXPOSE 5000
 
 ENV ASPNETCORE_URLS=http://+:5000
 ENV ASPNETCORE_ENVIRONMENT=Development
-
+ENV ConnectionStrings__DefaultConnection="Server=db;Database=SoccerDb;Username=root;Password=2510203121;"
 # Creates a non-root user with an explicit UID and adds permission to access the /app folder
 # For more info, please refer to https://aka.ms/vscode-docker-dotnet-configure-containers
 RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /app
@@ -23,7 +23,7 @@ RUN dotnet publish "Soccer.Api.csproj" -c Release -o /app/publish /p:UseAppHost=
 
 
 FROM build AS final
+WORKDIR /src
 COPY --from=build /src .
 WORKDIR /src/Soccer.Api
-RUN dotnet dev-certs https --trust
-ENTRYPOINT ["dotnet", "run"]
+ENTRYPOINT ["dotnet", "run" ,"watch"]

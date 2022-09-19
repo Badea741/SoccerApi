@@ -12,15 +12,10 @@ public class Smtp
         mailMessage.IsBodyHtml = true;
         mailMessage.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(message, null, MediaTypeNames.Text.Html));
         using var smtpClient = new SmtpClient("smtp.gmail.com", 587);
-        smtpClient.Credentials = new System.Net.NetworkCredential(_fromMail, "djrqjzqqatphsyiw");
+        smtpClient.Credentials = new System.Net.NetworkCredential(_fromMail, "xefqqrjoodfqowzy");
         smtpClient.EnableSsl = true;
-        try
-        {
-            await smtpClient.SendMailAsync(mailMessage);
-        }
-        catch (System.Exception ex)
-        {
-            throw ex;
-        }
+
+        await smtpClient.SendMailAsync(mailMessage);
+
     }
 }

@@ -1,12 +1,13 @@
 using System.Web;
 using AuthenticationServices.Models;
 using EmailSender;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 
 namespace AuthenticationServices.Authentication;
 public partial class Authentication<TUser> where TUser : IdentityUser
 {
-    public virtual async Task<AuthenticationResults> ForgotPasswordAsync(string username, string newPassword)
+    public virtual async Task<AuthenticationResults> ForgotPasswordAsync(string username, string newPassword, string url = null!)
     {
         var results = new AuthenticationResults();
         var user = await _userManager.FindByNameAsync(username);
@@ -21,7 +22,9 @@ public partial class Authentication<TUser> where TUser : IdentityUser
         newPassword = HttpUtility.UrlEncode(newPassword);
         try
         {
-            await Smtp.SendEmailAsync(user.Email, "Reset Password", $"Please reset your password by visiting this link: {"\n"} https://localhost:5001/Auth/ResetPassword?username={username}&token={token}&newPassword={newPassword}");
+
+
+            await Smtp.SendEmailAsync(user.Email, "Reset Password", $"Please reset your password by visiting this link: {"\n"} {url}/Auth/ResetPassword?username={username}&token={token}&newPassword={newPassword}");
             results.Message = "Email sent successfully";
             results.IsSuccess = true;
             results.Username = username;

@@ -1,37 +1,55 @@
 # Please refer https://aka.ms/HTTPSinContainer on how to setup an https developer certificate for your ASP .NET Core service.
 
-version: '3.4'
+version: '3.8'
 
 services:
   server:
-    image: soccerapi:build
+    # image: soccerapi:dev
     build:
       context: .
       dockerfile: Soccer.Api/Dockerfile
     ports:
       - 5000:5000
     depends_on:
+      - seq
       - db
+    environment:
+      - SimpleProperty="Hello from docker compose"
+      - ConnectionStrings__DefaultConnection=Server=db;Database=SoccerDb;Username=root;Password=2510203121;
+      # - Seq="http://seq:5341"
     networks:
       - server-database
     volumes:
       - .:/src
+    entrypoint: dotnet run 
+   
+  seq:
+     image: datalust/seq:latest
+     environment:
+      - ACCEPT_EULA=Y
+     ports:
+      - 5343:80
+     networks:
+      - server-database
 
   db:
-     image: mysql/mysql-server:latest
-     environment:
-       MYSQL_ROOT_PASSWORD: 2510203121
-       MYSQL_DATABASE: SoccerDb
-      #  MYSQL_USER: root
-       MYSQL_PASSWORD: 2510203121
-       
-     volumes:
-       - dbvolum1:/var/lib/mysql
-     networks:
-       - server-database
-     restart: always
+    image: mysql/mysql-server:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=2510203121
+      - MYSQL_DATABASE=SoccerDb
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=2510203121
+    volumes:
+      - dbvolume4:/var/lib/mysql
+      - ./_MySQL_Init_Script:/docker-entrypoint-initdb.d
+
+    networks:
+      - server-database
+    # ports:
+      # - 3306:3306
+
 volumes:
-    dbvolum1:
+    dbvolume4:
 networks:
   server-database:
     driver: bridge

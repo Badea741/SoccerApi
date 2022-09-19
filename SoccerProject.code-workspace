@@ -40,9 +40,6 @@
 			"path": "Src/AuthenticationServices"
 		},
 		{
-			"path": "Src/EmailSender"
-		},
-		{
 			"path": "Soccer.Shared/AutoMapperProfiles"
 		}
 	],
