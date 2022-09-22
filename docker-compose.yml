@@ -4,7 +4,7 @@ version: '3.8'
 
 services:
   server:
-    # image: soccerapi:dev
+    image: soccerapi:dev
     build:
       context: .
       dockerfile: Soccer.Api/Dockerfile
@@ -12,15 +12,18 @@ services:
       - 5000:5000
     depends_on:
       - seq
-      - db
+      # - db
     environment:
       - SimpleProperty="Hello from docker compose"
       - ConnectionStrings__DefaultConnection=Server=db;Database=SoccerDb;Username=root;Password=2510203121;
+      - Debug:ShowHost=true
       # - Seq="http://seq:5341"
     networks:
       - server-database
     volumes:
       - .:/src
+    deploy:
+      replicas: 6
     entrypoint: dotnet run 
    
   seq:
@@ -28,9 +31,9 @@ services:
      environment:
       - ACCEPT_EULA=Y
      ports:
-      - 5343:80
-     networks:
-      - server-database
+      - 5344:80
+    #  networks:
+      # - server-database
 
   db:
     image: mysql/mysql-server:latest
@@ -39,17 +42,17 @@ services:
       - MYSQL_DATABASE=SoccerDb
       - MYSQL_USER=root
       - MYSQL_PASSWORD=2510203121
-    volumes:
-      - dbvolume4:/var/lib/mysql
-      - ./_MySQL_Init_Script:/docker-entrypoint-initdb.d
+    # volumes:
+    #   - dbvolume4:/var/lib/mysql
+    #   - ./_MySQL_Init_Script:/docker-entrypoint-initdb.d
 
-    networks:
-      - server-database
+    # networks:
+      # - server-database
     # ports:
       # - 3306:3306
 
-volumes:
-    dbvolume4:
+# volumes:
+#     dbvolume4:
 networks:
   server-database:
     driver: bridge

@@ -43,5 +43,7 @@
 			"path": "Soccer.Shared/AutoMapperProfiles"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "SoccerProject"
+	}
 }

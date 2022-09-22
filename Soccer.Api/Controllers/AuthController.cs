@@ -12,7 +12,7 @@ using Soccer.Shared.Entities;
 namespace Soccer.Api.Controllers;
 [ApiController]
 [Route("[controller]/[action]")]
-[Authorize(AuthenticationSchemes = "Bearer")]
+// [Authorize(AuthenticationSchemes = "Bearer")]
 public class AuthController : ControllerBase
 {
     private readonly IAuthentication<ApplicationUser> _auth;
@@ -64,7 +64,7 @@ public class AuthController : ControllerBase
             return BadRequest(results);
         return Ok(results);
     }
-    [Authorize(Roles = Roles.User)]
+    [Authorize(Roles = Roles.Admin)]
     [HttpPost]
     public async Task<IActionResult> AddUserToRole([FromQuery] string username, string role)
     {
@@ -83,7 +83,7 @@ public class AuthController : ControllerBase
             return BadRequest(results);
         return Ok(results);
     }
-    // [Authorize(Roles = Roles.Admin)]
+    [Authorize(Roles = Roles.Admin)]
     [HttpGet]
     public IActionResult GetUsers()
     {
@@ -92,7 +92,7 @@ public class AuthController : ControllerBase
             return BadRequest(results);
         return Ok(results.Select(u => _mapper.Map<ApplicationUserDto>(u)));
     }
-    // [Authorize(Roles = Roles.Admin)]
+    [Authorize(Roles = Roles.Admin)]
     [HttpGet]
     public async Task<IActionResult> GetUsersInRoles([FromQuery] string role)
     {

@@ -6,7 +6,7 @@ public partial class Authentication<TUser> where TUser : IdentityUser
 {
     public List<TUser> GetAllUsers()
     {
-        return _userManager.Users.ToList();
+        return _userManager.Users.AsParallel().ToList();
     }
     public virtual async Task<List<TUser>> GetUsersInRoleAsync(string role)
     {
@@ -15,6 +15,6 @@ public partial class Authentication<TUser> where TUser : IdentityUser
 
 
         var users = await _userManager.GetUsersInRoleAsync(role);
-        return users.ToList();
+        return users.AsParallel().ToList();
     }
 }
