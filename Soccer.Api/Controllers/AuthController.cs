@@ -12,7 +12,7 @@ using Soccer.Shared.Entities;
 namespace Soccer.Api.Controllers;
 [ApiController]
 [Route("[controller]/[action]")]
-// [Authorize(AuthenticationSchemes = "Bearer")]
+[Authorize(AuthenticationSchemes = "Bearer")]
 public class AuthController : ControllerBase
 {
     private readonly IAuthentication<ApplicationUser> _auth;
