@@ -1,3 +1,4 @@
+using AuthenticationServices.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
@@ -75,6 +76,9 @@ app.UseSwaggerUI(options =>
     options.SwaggerEndpoint("/swagger/v1/swagger.json", "SoccerApiV1");
     options.RoutePrefix = string.Empty;
 });
+Jwt jwt = new();
+builder.Configuration.GetSection("Jwt").Bind(jwt);
+System.Console.WriteLine(jwt.Key);
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
