@@ -1,59 +1,61 @@
 using System.Web;
 using AuthenticationServices.Models;
 using EmailSender;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-
-namespace AuthenticationServices.Authentication;
-public partial class Authentication<TUser> where TUser : IdentityUser
+using System.Collections.Generic;
+using System.Threading.Tasks;
+namespace AuthenticationServices.Authentication
 {
-    public virtual async Task<AuthenticationResults> ForgotPasswordAsync(string username, string newPassword, string url = null!)
+    public partial class Authentication<TUser> where TUser : IdentityUser
     {
-        var results = new AuthenticationResults();
-        var user = await _userManager.FindByNameAsync(username);
-        if (user == null)
+        public virtual async Task<AuthenticationResults> ForgotPasswordAsync(string username, string newPassword, string url = null!)
         {
-            results.Message = "User does not exist";
-            return results;
+            var results = new AuthenticationResults();
+            var user = await _userManager.FindByNameAsync(username);
+            if (user == null)
+            {
+                results.Message = "User does not exist";
+                return results;
+            }
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            //it has to be url encoded so that it can be sent in the url
+            token = HttpUtility.UrlEncode(token);
+            newPassword = HttpUtility.UrlEncode(newPassword);
+            try
+            {
+
+
+                await Smtp.SendEmailAsync(user.Email, "Reset Password", $"Please reset your password by visiting this link: {"\n"} {url}/Auth/ResetPassword?username={username}&token={token}&newPassword={newPassword}");
+                results.Message = "Email sent successfully";
+                results.IsSuccess = true;
+                results.Username = username;
+                results.Roles = await _userManager.GetRolesAsync(user) as List<string>;
+                return results;
+            }
+            catch
+            {
+                results.Message = "Failed to send email";
+                return results;
+            }
         }
-        var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-        //it has to be url encoded so that it can be sent in the url
-        token = HttpUtility.UrlEncode(token);
-        newPassword = HttpUtility.UrlEncode(newPassword);
-        try
+        public virtual async Task<AuthenticationResults> ResetPasswordAsync(string username, string token, string password)
         {
-
-
-            await Smtp.SendEmailAsync(user.Email, "Reset Password", $"Please reset your password by visiting this link: {"\n"} {url}/Auth/ResetPassword?username={username}&token={token}&newPassword={newPassword}");
-            results.Message = "Email sent successfully";
+            var results = new AuthenticationResults();
+            var user = await _userManager.FindByNameAsync(username);
+            if (user == null)
+            {
+                results.Message = "User does not exist";
+                return results;
+            }
+            var result = await _userManager.ResetPasswordAsync(user, token, password);
+            if (!result.Succeeded)
+            {
+                results.Message = "Failed to reset password";
+                return results;
+            }
             results.IsSuccess = true;
-            results.Username = username;
-            results.Roles = await _userManager.GetRolesAsync(user) as List<string>;
+            results.Message = "Password reset successfully";
             return results;
         }
-        catch
-        {
-            results.Message = "Failed to send email";
-            return results;
-        }
-    }
-    public virtual async Task<AuthenticationResults> ResetPasswordAsync(string username, string token, string password)
-    {
-        var results = new AuthenticationResults();
-        var user = await _userManager.FindByNameAsync(username);
-        if (user == null)
-        {
-            results.Message = "User does not exist";
-            return results;
-        }
-        var result = await _userManager.ResetPasswordAsync(user, token, password);
-        if (!result.Succeeded)
-        {
-            results.Message = "Failed to reset password";
-            return results;
-        }
-        results.IsSuccess = true;
-        results.Message = "Password reset successfully";
-        return results;
     }
 }

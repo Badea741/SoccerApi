@@ -22,8 +22,8 @@ services:
       - server-database
     volumes:
       - .:/src
-    deploy:
-      replicas: 6
+    # deploy:
+    #   replicas: 6
     entrypoint: dotnet run 
    
   seq:
@@ -32,8 +32,8 @@ services:
       - ACCEPT_EULA=Y
      ports:
       - 5344:80
-    #  networks:
-      # - server-database
+     networks:
+      - server-database
 
   db:
     image: mysql/mysql-server:latest
@@ -42,17 +42,17 @@ services:
       - MYSQL_DATABASE=SoccerDb
       - MYSQL_USER=root
       - MYSQL_PASSWORD=2510203121
-    # volumes:
-    #   - dbvolume4:/var/lib/mysql
-    #   - ./_MySQL_Init_Script:/docker-entrypoint-initdb.d
+    volumes:
+      - dbvolume4:/var/lib/mysql
+      - ./_MySQL_Init_Script:/docker-entrypoint-initdb.d
 
-    # networks:
-      # - server-database
+    networks:
+      - server-database
     # ports:
       # - 3306:3306
 
-# volumes:
-#     dbvolume4:
+volumes:
+    dbvolume4:
 networks:
   server-database:
     driver: bridge
