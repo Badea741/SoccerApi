@@ -1,10 +1,16 @@
+using System.Text;
 using AuthenticationServices.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
+using RabbitMQ.Client;
 using Serilog;
+using Soccer.Api;
 using Soccer.Api.ServiceConfigurations;
+using Soccer.Mq;
+using Soccer.Mq.Models;
 using Soccer.Shared;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,9 +19,32 @@ builder.Host.UseSerilog((ctx, lc) =>
     lc.WriteTo.Console();
     lc.WriteTo.File("Logs/log.txt");
     lc.Enrich.WithProperty("SimpleProperty", builder.Configuration.GetValue<string>("SimpleProperty"));
-    lc.WriteTo.Seq("http://seq:5341");
+    lc.WriteTo.Seq("http://localhost:5341");
     lc.Enrich.WithProcessName();
 });
+
+builder.Services.Configure<RabbitMqConfiguration>(builder.Configuration.GetSection("RabbitMQ"));
+builder.Services.AddSingleton<MessageQueueHelper>();
+
+
+RabbitMqConfiguration rabbit = new RabbitMqConfiguration();
+builder.Configuration.GetSection("RabbitMQ").Bind(rabbit);
+
+
+Console.WriteLine(rabbit.HostName);
+
+// IModel model = connection.CreateModel();
+// model.ExchangeDeclare("testExchange1", "direct", true, true);
+// model.QueueDeclare("testQueue1", true, false, true);
+// model.QueueBind("testQueue1", "testExchange1", "route1");
+// model.BasicPublish("testExchange1", "route1", null, Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(rabbit)));
+
+
+
+
+
+
+
 builder.Host.ConfigureAppConfiguration(options =>
 {
     options.AddEnvironmentVariables();

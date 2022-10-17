@@ -5,7 +5,9 @@ using AuthenticationServices.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RabbitMQ.Client;
 using Serilog;
+using Soccer.Mq;
 using Soccer.Shared.Dtos;
 using Soccer.Shared.Entities;
 
@@ -18,12 +20,16 @@ public class AuthController : ControllerBase
     private readonly IAuthentication<ApplicationUser> _auth;
     private readonly IMapper _mapper;
     private readonly Serilog.ILogger _logger;
+    private readonly MessageQueueHelper _messageQueueHelper;
 
-    public AuthController(IAuthentication<ApplicationUser> auth, IMapper mapper, Serilog.ILogger logger)
+    public AuthController(IAuthentication<ApplicationUser> auth, IMapper mapper, Serilog.ILogger logger, MessageQueueHelper messageQueueHelper)
     {
         _auth = auth;
         _mapper = mapper;
         _logger = logger;
+        _messageQueueHelper = messageQueueHelper;
+        _messageQueueHelper.CreateQueue("test1234", true);
+
     }
     [AllowAnonymous]
     [HttpPost]
@@ -39,6 +45,9 @@ public class AuthController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> GetToken(Credentials credentials)
     {
+        _messageQueueHelper.PublishMessage("", "test1234", $"User {credentials.UserName} is trying to login");
+        _messageQueueHelper.Recieve("test1234", typeof(string));
+        // Console.WriteLine("+++++++++++++++++++=================>         " + recievedMessage);
         _logger.Information("GetToken");
         var result = await _auth.GetTokenAsync(credentials);
         if (!result.IsSuccess)

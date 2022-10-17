@@ -9,9 +9,9 @@ namespace AuthenticationServices.Authentication
 {
     public partial class Authentication<TUser> : IAuthentication<TUser> where TUser : IdentityUser
     {
-        private readonly UserManager<TUser> _userManager;
-        private readonly IMapper _mapper;
-        private readonly Jwt _jwt;
+        protected readonly UserManager<TUser> _userManager;
+        protected readonly IMapper _mapper;
+        protected readonly Jwt _jwt;
         public Authentication(UserManager<TUser> userManager, IMapper mapper, IOptions<Jwt> jwt)
         {
             _userManager = userManager;

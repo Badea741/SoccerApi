@@ -50,7 +50,17 @@ services:
       - server-database
     # ports:
       # - 3306:3306
-
+  rabbitmq:
+    container_name: rabbitmq
+    tty: true
+    hostname: localhost
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    image: rabbitmq:3-management
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
 volumes:
     dbvolume4:
 networks:

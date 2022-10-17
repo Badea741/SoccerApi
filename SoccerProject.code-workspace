@@ -19,9 +19,6 @@
 			"path": "Soccer.Api"
 		},
 		{
-			"path": "Src/Common"
-		},
-		{
 			"path": "Soccer.Shared/Entities/Configurations"
 		},
 		{
@@ -41,6 +38,9 @@
 		},
 		{
 			"path": "Soccer.Shared/AutoMapperProfiles"
+		},
+		{
+			"path": "Soccer.Mq"
 		}
 	],
 	"settings": {

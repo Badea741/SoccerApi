@@ -1,4 +1,7 @@
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
+using Soccer.Shared;
 
 public static class Seed
 {
@@ -24,7 +27,9 @@ public static class Seed
         modelBuilder.Entity<IdentityRole>().HasData(
            new IdentityRole { Id = "1eff24d7-208c-4fdc-85e2-decd064a98ce", Name = "Admin", NormalizedName = "ADMIN" }
        );
-
+        var builder = WebApplication.CreateBuilder();
+        var configuration = builder.Configuration;
+        configuration.AddUserSecrets(typeof(ApplicationDbContext).Assembly);
 
         modelBuilder.Entity<ApplicationUser>().HasData(new ApplicationUser
         {
@@ -33,7 +38,7 @@ public static class Seed
             NormalizedUserName = "ADMIN",
             Email = "admin@localhost.com",
             NormalizedEmail = "ADMIN@LOCALHOST.COM",
-            PasswordHash = new PasswordHasher<ApplicationUser>().HashPassword(null!, "P@ssw0rd123"),
+            PasswordHash = new PasswordHasher<ApplicationUser>().HashPassword(null!, configuration.GetValue<string>("AdminPassword")),
         });
         modelBuilder.Entity<IdentityUserRole<string>>().HasData(
             new IdentityUserRole<string>
