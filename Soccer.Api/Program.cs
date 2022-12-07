@@ -12,6 +12,9 @@ using Soccer.Api.ServiceConfigurations;
 using Soccer.Mq;
 using Soccer.Mq.Models;
 using Soccer.Shared;
+using Microsoft.Extensions.Caching.Memory;
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseSerilog((ctx, lc) =>
@@ -27,37 +30,26 @@ builder.Services.Configure<RabbitMqConfiguration>(builder.Configuration.GetSecti
 builder.Services.AddSingleton<MessageQueueHelper>();
 
 
+
 RabbitMqConfiguration rabbit = new RabbitMqConfiguration();
 builder.Configuration.GetSection("RabbitMQ").Bind(rabbit);
 
 
 Console.WriteLine(rabbit.HostName);
 
-// IModel model = connection.CreateModel();
-// model.ExchangeDeclare("testExchange1", "direct", true, true);
-// model.QueueDeclare("testQueue1", true, false, true);
-// model.QueueBind("testQueue1", "testExchange1", "route1");
-// model.BasicPublish("testExchange1", "route1", null, Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(rabbit)));
-
-
-
-
-
-
-
 builder.Host.ConfigureAppConfiguration(options =>
 {
     options.AddEnvironmentVariables();
 });
-//ohasdf
-// Add services to the container.
+
 
 builder.Services.AddControllers(options =>
 {
     // options.Filters.Add(new AuthorizeFilter());
 }).AddNewtonsoftJson(options =>
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+builder.Services.AddSingleton<IMemoryCache, MemoryCache>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddCorsConfiguration();
 builder.Services.AddSwaggerGenConfiguration(builder.Configuration);
@@ -72,20 +64,6 @@ builder.Services.AddLocalizationConfiguration();
 
 
 var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-// if (app.Environment.IsDevelopment())
-// {
-
-// }
-
-// Log.Logger = new LoggerConfiguration()
-//     .WriteTo.Console()
-//     .WriteTo.File("Logs/log.txt", rollingInterval: RollingInterval.Day)
-//     .Enrich.WithProperty("Application123", "Soccer.Api123")
-//     .WriteTo.Seq("http://seq:5341")
-//     .CreateLogger();
-//add serilog to the services
 
 using (var serviceScope = app.Services.GetService<IServiceScopeFactory>()?.CreateScope())
 {

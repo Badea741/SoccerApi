@@ -5,8 +5,10 @@ namespace Soccer.Api.ServiceConfigurations
     {
         public static IServiceCollection AddRepositories(this IServiceCollection services)
         {
-            services.AddScoped<ITeamRepository, TeamRepository>();
-            services.AddScoped<IPlayerRepository, PlayerRepository>();
+            services.AddScoped<TeamRepository>();
+            services.AddScoped<PlayerRepository>();
+            services.AddScoped<ITeamRepository, CachedTeamRepository>();
+            services.AddScoped<IPlayerRepository, CachedPlayerRepository>();
             return services;
         }
     }

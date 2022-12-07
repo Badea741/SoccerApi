@@ -20,15 +20,12 @@ public class AuthController : ControllerBase
     private readonly IAuthentication<ApplicationUser> _auth;
     private readonly IMapper _mapper;
     private readonly Serilog.ILogger _logger;
-    private readonly MessageQueueHelper _messageQueueHelper;
 
-    public AuthController(IAuthentication<ApplicationUser> auth, IMapper mapper, Serilog.ILogger logger, MessageQueueHelper messageQueueHelper)
+    public AuthController(IAuthentication<ApplicationUser> auth, IMapper mapper, Serilog.ILogger logger)
     {
         _auth = auth;
         _mapper = mapper;
         _logger = logger;
-        _messageQueueHelper = messageQueueHelper;
-        _messageQueueHelper.CreateQueue("test1234", true);
 
     }
     [AllowAnonymous]
@@ -44,10 +41,7 @@ public class AuthController : ControllerBase
     [AllowAnonymous]
     [HttpPost]
     public async Task<IActionResult> GetToken(Credentials credentials)
-    {
-        _messageQueueHelper.PublishMessage("", "test1234", $"User {credentials.UserName} is trying to login");
-        _messageQueueHelper.Recieve("test1234", typeof(string));
-        // Console.WriteLine("+++++++++++++++++++=================>         " + recievedMessage);
+    {        // Console.WriteLine("+++++++++++++++++++=================>         " + recievedMessage);
         _logger.Information("GetToken");
         var result = await _auth.GetTokenAsync(credentials);
         if (!result.IsSuccess)

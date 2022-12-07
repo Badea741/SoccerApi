@@ -52,7 +52,7 @@ public class MessageQueueHelper
             var body = ea.Body;
             var message = body.ToArray();
             _model.BasicAck(ea.DeliveryTag, false);
-            System.Console.WriteLine("======================================================>    " + message.DeSerialize(type));
+            System.Console.WriteLine(" ==> " + message.DeSerialize(type));
         };
 
     }
